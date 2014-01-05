@@ -1,0 +1,21 @@
+{
+  "name": "hubot-standup",
+  "version": "0.0.1",
+  "description": "A hubot to ping people for the standup",
+  "main": "./lib/index.coffee",
+  "scripts": {
+    "test": "mocha --colors --compilers coffee:coffee-script"
+  },
+  "repository": "",
+  "author": "François de Metz",
+  "license": "BSD",
+  "devDependencies": {
+    "mocha": "~1.14.0",
+    "coffee-script": "~1.6.3",
+    "expect.js": "~0.2.0",
+    "sinon": "~1.7.3"
+  },
+  "dependencies": {
+    "cron": "~1.0.1"
+  }
+}
