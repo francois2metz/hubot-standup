@@ -38,6 +38,18 @@ describe 'A standup', ->
 
     @cron.getCall(0).args[1]()
 
+  it 'can be stopped', ->
+    standup = new Standup(@cron, {at: '9'}).start()
+    @jobMock.expects('stop').once()
+    standup.stop()
+    @jobMock.verify()
+
+  it 'stop only when started', ->
+    standup = new Standup(@cron, {at: '9'})
+    @jobMock.expects('stop').never()
+    standup.stop()
+    @jobMock.verify()
+
   it 'can create a new cron on report', ->
     @cron.exactly(2);
     @jobMock.expects('stop').once()

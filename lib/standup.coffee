@@ -15,6 +15,10 @@ class Standup
     @job = @createJob(@at)
     @
 
+  stop: ->
+    @job.stop() if @job
+    @
+
   createJob: (at, callback) ->
     opts =
       cronTime: @cronLine(at)
