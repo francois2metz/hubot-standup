@@ -4,6 +4,16 @@ A hubot script that ping the team everyday for the standup.
 
 ## Install
 
+Add **hubot-standup** to your *package.json*.
+
+    npm install --save hubot-standup
+
+Then add **hubot-standup** to *external_scripts.json*.
+
+```javascript
+[..., "hubot-standup", ...]
+```
+
 ## Usage
 
 To set a standup for every week day:
