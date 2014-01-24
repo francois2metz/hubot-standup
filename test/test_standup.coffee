@@ -170,8 +170,26 @@ describe 'The hubot report function', ->
     expect(spy.withArgs('10').calledOnce).to.be.ok()
 
   it 'do nothing if no previous standup', ->
-    response = createResponse('report at 10', @regexp)
+    response = createResponse('standup report at 10', @regexp)
     scriptStandup.report(
       get: ->
         null
     )(response)
+
+describe 'The hubot remove function', ->
+  beforeEach ->
+    @regexp = scriptStandup.remove.regexp
+
+  it 'match remove', ->
+    expect('standup remove'.match(@regexp)).to.be.ok()
+    expect('standup'.match(@regexp)).to.not.be.ok()
+
+  it 'remove the standup', ->
+    loader =
+      destroy: ->
+    spy = sinon.spy(loader, 'destroy')
+
+    response = createResponse('standup remove', @regexp)
+
+    scriptStandup.remove(loader)(response)
+    expect(spy.calledOnce).to.be.ok()

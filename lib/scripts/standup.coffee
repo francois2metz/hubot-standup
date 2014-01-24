@@ -38,6 +38,13 @@ report = (loader) ->
 
 report.regexp = /standup report at ([0-9]+:?[0-9]*)/
 
+remove = (loader) ->
+  (msg) ->
+    loader.destroy()
+    msg.send "standup removed"
+
+remove.regexp = /standup remove/
+
 STANDUP = null
 
 createLoader = (robot) ->
@@ -48,6 +55,9 @@ createLoader = (robot) ->
         @sendMessage opts
     ).start()
     robot.brain.data.standup = opts
+  destroy: ->
+    STANDUP.stop() if STANDUP
+    robot.brain.data.standup = null
   sendMessage: (opts) ->
     robot.send opts.user, opts.args.join(', ') + " standup meeting!"
 
@@ -60,8 +70,10 @@ exports = (robot) ->
 
     robot.respond(create.regexp, create(loader))
     robot.respond(report.regexp, report(loader))
+    robot.respond(remove.regexp, remove(loader))
 
 exports.create = create
 exports.report = report
+exports.remove = remove
 
 module.exports = exports
