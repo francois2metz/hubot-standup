@@ -4,6 +4,7 @@
 # Commands:
 #   hubot standup at 9 for user1
 #   hubot standup report at 15
+#   hubot standup remove
 
 cron = require 'cron'
 Standup = require '../standup'
