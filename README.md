@@ -31,3 +31,5 @@ Remove the standup:
 ## License
 
 Copyright (c) 2014 François de Metz
+
+See [LICENSE](LICENSE).
