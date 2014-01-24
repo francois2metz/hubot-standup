@@ -5,6 +5,7 @@ cron           = require 'cron'
 
 hubotStandup   = require '../'
 Standup        = hubotStandup.Standup
+scriptStandup  = require '../lib/scripts/standup'
 
 describe 'A standup', ->
   beforeEach ->
@@ -77,3 +78,97 @@ describe 'A standup', ->
 
     @jobMock.expects('stop').never()
     standup.report '10'
+    @jobMock.verify()
+
+createResponse = (text, regexp) ->
+  {Response, TextMessage} = require('hubot')
+  message = new TextMessage('roger', text, 1)
+  response = new Response((()->), message, message.match(regexp))
+  response.send = () ->
+  response
+
+describe 'The hubot create function', ->
+  beforeEach ->
+    @regexp = scriptStandup.create.regexp
+    @loader =
+      get: ->
+      create: ->
+    @loaderMock = sinon.mock(@loader)
+
+  it 'match standup with hour and users', ->
+    expect('standup at 8 for user'.match(@regexp)[1]).to.eql('8')
+    expect('standup at 8 for user, user2'.match(@regexp)[3]).to.eql('user, user2')
+
+  it 'match standup with hours and minutes', ->
+    expect('standup at 8:15 for user'.match(@regexp)[1]).to.eql('8:15')
+
+  it 'match standup with timezone', ->
+    expect('standup at 9 (Europe/Paris) for user'.match(@regexp)[1]).to.eql('9')
+    expect('standup at 9 (Europe/Paris) for user'.match(@regexp)[2]).to.eql('Europe/Paris')
+
+  it 'match standup with users and timezone', ->
+    expect('standup at 9 (Europe/Paris) for user, user2'.match(@regexp)[3]).to.eql('user, user2')
+
+  it 'create a standup at 8 for user', ->
+    @loaderMock.expects('create').once().withArgs({at: '8', args: ['user'], user: 'roger'})
+
+    response = createResponse('standup at 8 for user', @regexp)
+    scriptStandup.create(@loader)(response)
+    @loaderMock.verify()
+
+  it 'create a standup at 9 for user2', ->
+    @loaderMock.expects('create').once().withArgs({at: '9', args: ['user2'], user: 'roger'})
+
+    response = createResponse('standup at 9 for user2', @regexp)
+    scriptStandup.create(@loader)(response)
+
+    @loaderMock.verify()
+
+  it 'create a standup at 10 (Europe/Paris) for user1, user2', ->
+    @loaderMock.expects('create').once().withArgs({at: '10', timezone: 'Europe/Paris', args: ['user1', 'user2'], user: 'roger'})
+
+    response = createResponse('standup at 10 (Europe/Paris) for user1, user2', @regexp)
+    scriptStandup.create(@loader)(response)
+
+    @loaderMock.verify()
+
+  it 'stop standup if previous standup defined', ->
+    previousStandup = stop: ->
+    previousStandupMock = sinon.mock(previousStandup)
+    previousStandupMock.expects('stop').once()
+    @loaderMock.expects('get').once().returns(previousStandup)
+
+    response = createResponse('standup at 8 for user', @regexp)
+    scriptStandup.create(@loader)(response)
+
+    previousStandupMock.verify()
+    @loaderMock.verify()
+
+describe 'The hubot report function', ->
+  beforeEach ->
+    @regexp = scriptStandup.report.regexp
+
+  it 'match report with hour', ->
+    expect('report at 8'.match(@regexp)[1]).to.eql('8')
+
+  it 'match report with 2 digit hour', ->
+    expect('report at 15'.match(@regexp)[1]).to.eql('15')
+
+  it 'report the standup', ->
+    current =
+      report: () ->
+    spy = sinon.spy(current, 'report')
+
+    response = createResponse('report at 10', @regexp)
+
+    scriptStandup.report(
+      get: -> current
+    )(response)
+    expect(spy.withArgs('10').calledOnce).to.be.ok()
+
+  it 'do nothing if no previous standup', ->
+    response = createResponse('report at 10', @regexp)
+    scriptStandup.report(
+      get: ->
+        null
+    )(response)

@@ -1,1 +1,67 @@
-module.exports = (robot, standup = null) ->
+# Description:
+#   Remind the daily standup
+#
+# Commands:
+#   hubot standup at 9 for user1
+#   hubot standup report at 15
+
+cron = require 'cron'
+Standup = require '../standup'
+
+splitUsers = (users) ->
+  users.split(',').map (user) -> user.trim()
+
+create = (loader) ->
+  (msg) ->
+    previous = loader.get()
+    if previous
+      previous.stop()
+      msg.send "previous standup discarded"
+
+    users = splitUsers(msg.match[3])
+    opts =
+      at: msg.match[1]
+      args: users
+      user: msg.message.user
+    opts.timezone = msg.match[2] if msg.match[2]
+    loader.create(opts)
+    msg.send "standup defined at #{opts.at} for #{opts.args.join(',')}"
+
+create.regexp = /standup at ([0-9]+:?[0-9]*) ?\(?([a-zA-Z/]+)?\)? ?for ([a-zA-Z1-9, ]+)/
+
+report = (loader) ->
+  (msg) ->
+    previous = loader.get()
+    return unless previous
+    previous.report(msg.match[1])
+    msg.send "standup reported at #{msg.match[1]}"
+
+report.regexp = /report at ([0-9]+)/
+
+STANDUP = null
+
+createLoader = (robot) ->
+  get: ->
+    STANDUP
+  create: (opts) ->
+    STANDUP = new Standup(cron.CronJob, opts, () =>
+        @sendMessage opts
+    ).start()
+    robot.brain.data.standup = opts
+  sendMessage: (opts) ->
+    robot.send opts.user, opts.args.join(', ') + " standup meeting!"
+
+exports = (robot) ->
+  robot.brain.on 'loaded', =>
+    loader = createLoader(robot)
+    if robot.brain.data.standup
+      loader.create(robot.brain.data.standup)
+      console.log('loaded with ', robot.brain.data.standup)
+
+    robot.respond(create.regexp, create(loader))
+    robot.respond(report.regexp, report(loader))
+
+exports.create = create
+exports.report = report
+
+module.exports = exports
