@@ -109,14 +109,14 @@ describe 'The hubot create function', ->
     expect('standup at 9 (Europe/Paris) for user, user2'.match(@regexp)[3]).to.eql('user, user2')
 
   it 'create a standup at 8 for user', ->
-    @loaderMock.expects('create').once().withArgs({at: '8', args: ['user'], user: 'roger'})
+    @loaderMock.expects('create').once().withArgs({at: '8', users: ['user'], user: 'roger'})
 
     response = createResponse('standup at 8 for user', @regexp)
     scriptStandup.create(@loader)(response)
     @loaderMock.verify()
 
   it 'create a standup at 9 for user2', ->
-    @loaderMock.expects('create').once().withArgs({at: '9', args: ['user2'], user: 'roger'})
+    @loaderMock.expects('create').once().withArgs({at: '9', users: ['user2'], user: 'roger'})
 
     response = createResponse('standup at 9 for user2', @regexp)
     scriptStandup.create(@loader)(response)
@@ -124,7 +124,7 @@ describe 'The hubot create function', ->
     @loaderMock.verify()
 
   it 'create a standup at 10 (Europe/Paris) for user1, user2', ->
-    @loaderMock.expects('create').once().withArgs({at: '10', timezone: 'Europe/Paris', args: ['user1', 'user2'], user: 'roger'})
+    @loaderMock.expects('create').once().withArgs({at: '10', timezone: 'Europe/Paris', users: ['user1', 'user2'], user: 'roger'})
 
     response = createResponse('standup at 10 (Europe/Paris) for user1, user2', @regexp)
     scriptStandup.create(@loader)(response)

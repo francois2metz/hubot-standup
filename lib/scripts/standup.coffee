@@ -21,11 +21,11 @@ create = (loader) ->
     users = splitUsers(msg.match[3])
     opts =
       at: msg.match[1]
-      args: users
+      users: users
       user: msg.message.user
     opts.timezone = msg.match[2] if msg.match[2]
     loader.create(opts)
-    msg.send "standup defined at #{opts.at} for #{opts.args.join(',')}"
+    msg.send "standup defined at #{opts.at} for #{opts.users.join(',')}"
 
 create.regexp = /standup at ([0-9]+:?[0-9]*) ?\(?([a-zA-Z/]+)?\)? ?for ([a-zA-Z1-9, ]+)/
 
@@ -59,7 +59,7 @@ createLoader = (robot) ->
     STANDUP.stop() if STANDUP
     robot.brain.data.standup = null
   sendMessage: (opts) ->
-    robot.send opts.user, opts.args.join(', ') + " standup meeting!"
+    robot.send opts.user, opts.users.join(', ') + " standup meeting!"
 
 exports = (robot) ->
   robot.brain.on 'loaded', =>
