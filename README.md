@@ -1,17 +1,17 @@
-# Hubot standup
+# Hubot ping standup
 
 A hubot script that ping the team everyday for the standup.
 
 ## Install
 
-Add **hubot-standup** to your *package.json*.
+Add **hubot-ping-standup** to your *package.json*.
 
-    npm install --save hubot-standup
+    npm install --save hubot-ping-standup
 
 Then add **hubot-standup** to *external_scripts.json*.
 
 ```javascript
-[..., "hubot-standup", ...]
+[..., "hubot-ping-standup", ...]
 ```
 
 ## Usage

@@ -1,5 +1,5 @@
 {
-  "name": "hubot-standup",
+  "name": "hubot-ping-standup",
   "version": "0.0.1",
   "description": "A hubot to ping people for the standup",
   "main": "./lib/index.coffee",
