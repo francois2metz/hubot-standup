@@ -6,7 +6,10 @@
   "scripts": {
     "test": "mocha --colors --compilers coffee:coffee-script"
   },
-  "repository": "",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/francois2metz/hubot-standup.git"
+  },
   "author": "François de Metz",
   "license": "BSD",
   "devDependencies": {
