@@ -1,5 +1,5 @@
 class Standup
-  constructor: (@cron, {@at, @timezone, @args}, @callback) ->
+  constructor: (@cron, {@at, @timezone}, @callback) ->
 
   report: (at) ->
     return @ unless @job
@@ -35,6 +35,6 @@ class Standup
     "00 #{minutes} #{hour} * * 1-5"
 
   onTick: ->
-    @callback(@args) if @callback
+    @callback() if @callback
 
 module.exports = Standup

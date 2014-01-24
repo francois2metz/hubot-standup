@@ -31,9 +31,8 @@ describe 'A standup', ->
 
     expect(@cron.calledWith(cronTime: '00 00 9 * * 1-5', start: true, timeZone: 'Europe/Paris', onTick: sinon.match.func)).to.be.ok()
 
-  it 'can have a callback with args and callback', (done) ->
-    new Standup(@cron, {at: '9', args: ['Chuck', 'Norris']}, (message) ->
-      expect(message).to.eql(['Chuck', 'Norris'])
+  it 'can have a callback', (done) ->
+    new Standup(@cron, {at: '9'}, () ->
       done()
     ).start()
 
