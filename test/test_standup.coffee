@@ -151,6 +151,9 @@ describe 'The hubot report function', ->
   it 'match report with hour', ->
     expect('standup report at 8'.match(@regexp)[1]).to.eql('8')
 
+  it 'match report with hour and minutes', ->
+    expect('standup report at 8:15'.match(@regexp)[1]).to.eql('8:15')
+
   it 'match report with 2 digit hour', ->
     expect('standup report at 15'.match(@regexp)[1]).to.eql('15')
 
