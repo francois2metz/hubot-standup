@@ -18,17 +18,17 @@ describe 'A standup', ->
     new Standup(@cron, {at: '8'}).start()
 
     expect(@cron.calledWithNew()).to.be.ok()
-    expect(@cron.calledWith(cronTime: '00 00 8 * * 1-5', start: true)).to.be.ok()
+    expect(@cron.calledWith(cronTime: '00 00 8 * * 1-5', start: true, onTick: sinon.match.func)).to.be.ok()
 
   it 'can be defined at 9:15', ->
     new Standup(@cron, {at: '9:15'}).start()
 
-    expect(@cron.calledWith(cronTime: '00 15 9 * * 1-5', start: true)).to.be.ok()
+    expect(@cron.calledWith(cronTime: '00 15 9 * * 1-5', start: true, onTick: sinon.match.func)).to.be.ok()
 
   it 'can be defined with a timezone', ->
     new Standup(@cron, {at: '9', timezone: 'Europe/Paris'}).start()
 
-    expect(@cron.calledWith(cronTime: '00 00 9 * * 1-5', start: true, timeZone: 'Europe/Paris')).to.be.ok()
+    expect(@cron.calledWith(cronTime: '00 00 9 * * 1-5', start: true, timeZone: 'Europe/Paris', onTick: sinon.match.func)).to.be.ok()
 
   it 'can have a callback with args and callback', (done) ->
     new Standup(@cron, {at: '9', args: ['Chuck', 'Norris']}, (message) ->
@@ -36,7 +36,7 @@ describe 'A standup', ->
       done()
     ).start()
 
-    @cron.getCall(0).args[1]()
+    @cron.getCall(0).args[0].onTick()
 
   it 'can be stopped', ->
     standup = new Standup(@cron, {at: '9'}).start()
@@ -67,7 +67,7 @@ describe 'A standup', ->
     standup = new Standup(@cron, {at: '9'}).start()
     standup.report '10'
 
-    @cron.getCall(1).args[1]()
+    @cron.getCall(1).args[0].onTick()
 
     expect(@cron.getCall(2).args[0].cronTime).to.eql('00 00 9 * * 1-5', start: true)
     @jobMock.verify()

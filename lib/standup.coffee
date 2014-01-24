@@ -23,11 +23,11 @@ class Standup
     opts =
       cronTime: @cronLine(at)
       start: true
+      onTick: =>
+        @onTick()
+        callback() if callback
     opts.timeZone = @timezone if @timezone
-    new @cron(opts, =>
-      @onTick()
-      callback() if callback
-    )
+    new @cron(opts)
 
   cronLine: (at) ->
     [hour, minutes] = at.split ':'
