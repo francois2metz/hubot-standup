@@ -2,8 +2,6 @@
 
 A hubot script that ping the team everyday for the standup.
 
-**This hubot script is not yet working. Work in progress.**
-
 ## Install
 
 ## Usage
