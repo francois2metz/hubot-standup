@@ -36,7 +36,7 @@ report = (loader) ->
     previous.report(msg.match[1])
     msg.send "standup reported at #{msg.match[1]}"
 
-report.regexp = /report at ([0-9]+)/
+report.regexp = /standup report at ([0-9]+)/
 
 STANDUP = null
 

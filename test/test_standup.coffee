@@ -149,17 +149,17 @@ describe 'The hubot report function', ->
     @regexp = scriptStandup.report.regexp
 
   it 'match report with hour', ->
-    expect('report at 8'.match(@regexp)[1]).to.eql('8')
+    expect('standup report at 8'.match(@regexp)[1]).to.eql('8')
 
   it 'match report with 2 digit hour', ->
-    expect('report at 15'.match(@regexp)[1]).to.eql('15')
+    expect('standup report at 15'.match(@regexp)[1]).to.eql('15')
 
   it 'report the standup', ->
     current =
       report: () ->
     spy = sinon.spy(current, 'report')
 
-    response = createResponse('report at 10', @regexp)
+    response = createResponse('standup report at 10', @regexp)
 
     scriptStandup.report(
       get: -> current
