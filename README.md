@@ -1,6 +1,6 @@
 # Hubot ping standup
 
-A hubot script that ping the team everyday for the standup.
+A hubot script that ping the team everyday for the standup meeting.
 
 ## Install
 
