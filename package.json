@@ -1,6 +1,6 @@
 {
   "name": "hubot-ping-standup",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A hubot to ping people for the standup",
   "main": "./lib/index.coffee",
   "scripts": {
