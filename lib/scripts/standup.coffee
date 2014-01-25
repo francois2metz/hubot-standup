@@ -35,7 +35,7 @@ report = (loader) ->
     previous = loader.get()
     return unless previous
     previous.report(msg.match[1])
-    msg.send "standup reported at #{msg.match[1]}"
+    msg.send "#{previous.options.users.join(',')} standup reported at #{msg.match[1]}"
 
 report.regexp = /standup report at ([0-9]+:?[0-9]*)/
 

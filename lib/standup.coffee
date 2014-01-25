@@ -1,5 +1,6 @@
 class Standup
-  constructor: (@cron, {@at, @timezone}, @callback) ->
+  constructor: (@cron, @options, @callback) ->
+    {@at, @timezone} = @options
 
   report: (at) ->
     return @ unless @job

@@ -158,6 +158,8 @@ describe 'The hubot report function', ->
 
   it 'report the standup', ->
     current =
+      options:
+        users: []
       report: () ->
     spy = sinon.spy(current, 'report')
 
