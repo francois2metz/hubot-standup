@@ -1,14 +1,14 @@
 {
   "name": "hubot-ping-standup",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A hubot script to ping the team everyday for the standup meeting.",
   "main": "./lib/index.coffee",
   "scripts": {
     "test": "mocha --colors --compilers coffee:coffee-script"
   },
   "repository": {
-      "type": "git",
-      "url": "https://github.com/francois2metz/hubot-standup.git"
+    "type": "git",
+    "url": "https://github.com/francois2metz/hubot-standup.git"
   },
   "author": "François de Metz",
   "license": "BSD",
