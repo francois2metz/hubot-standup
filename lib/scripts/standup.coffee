@@ -12,6 +12,9 @@ Standup = require '../standup'
 splitUsers = (users) ->
   users.split(',').map (user) -> user.trim()
 
+joinUsers = (users) ->
+  users.join(', ')
+
 create = (loader) ->
   (msg) ->
     previous = loader.get()
@@ -26,7 +29,7 @@ create = (loader) ->
       user: msg.message.user
     opts.timezone = msg.match[2] if msg.match[2]
     loader.create(opts)
-    msg.send "standup defined at #{opts.at} for #{opts.users.join(',')}"
+    msg.send "standup defined at #{opts.at} for #{joinUsers(opts.users)}"
 
 create.regexp = /standup at ([0-9]+:?[0-9]*) ?\(?([a-zA-Z/]+)?\)? ?for ([a-zA-Z1-9, ]+)/
 
@@ -35,7 +38,7 @@ report = (loader) ->
     previous = loader.get()
     return unless previous
     previous.report(msg.match[1])
-    msg.send "#{previous.options.users.join(',')} standup reported at #{msg.match[1]}"
+    msg.send "#{joinUsers(previous.options.users)} standup reported at #{msg.match[1]}"
 
 report.regexp = /standup report at ([0-9]+:?[0-9]*)/
 
@@ -60,7 +63,7 @@ createLoader = (robot) ->
     STANDUP.stop() if STANDUP
     robot.brain.data.standup = null
   sendMessage: (opts) ->
-    robot.send opts.user, opts.users.join(', ') + " standup meeting!"
+    robot.send opts.user, "#{joinUsers(opts.users)} standup meeting!"
 
 exports = (robot) ->
   robot.brain.on 'loaded', =>
