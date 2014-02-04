@@ -4,7 +4,8 @@
   "description": "A hubot script to ping the team everyday for the standup meeting.",
   "main": "./lib/index.coffee",
   "scripts": {
-    "test": "mocha --colors --compilers coffee:coffee-script"
+    "test": "mocha --colors --compilers coffee:coffee-script",
+    "watch": "mocha --colors --compilers coffee:coffee-script --watch"
   },
   "repository": {
     "type": "git",
