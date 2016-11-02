@@ -1,6 +1,6 @@
 {
   "name": "hubot-ping-standup",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "A hubot script to ping the team everyday for the standup meeting.",
   "main": "./lib/index.coffee",
   "scripts": {
