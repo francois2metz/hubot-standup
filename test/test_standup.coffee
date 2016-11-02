@@ -81,7 +81,7 @@ describe 'A standup', ->
 
 createResponse = (text, regexp) ->
   {Response, TextMessage} = require('hubot')
-  message = new TextMessage('roger', text, 1)
+  message = new TextMessage({room: 'dev'}, text, 1)
   response = new Response((()->), message, message.match(regexp))
   response.send = () ->
   response
@@ -109,14 +109,14 @@ describe 'The hubot create function', ->
     expect('standup at 9 (Europe/Paris) for user, user2'.match(@regexp)[3]).to.eql('user, user2')
 
   it 'create a standup at 8 for user', ->
-    @loaderMock.expects('create').once().withArgs({at: '8', users: ['user'], user: 'roger'})
+    @loaderMock.expects('create').once().withArgs({at: '8', users: ['user'], room: 'dev'})
 
     response = createResponse('standup at 8 for user', @regexp)
     scriptStandup.create(@loader)(response)
     @loaderMock.verify()
 
   it 'create a standup at 9 for user2', ->
-    @loaderMock.expects('create').once().withArgs({at: '9', users: ['user2'], user: 'roger'})
+    @loaderMock.expects('create').once().withArgs({at: '9', users: ['user2'], room: 'dev'})
 
     response = createResponse('standup at 9 for user2', @regexp)
     scriptStandup.create(@loader)(response)
@@ -124,7 +124,7 @@ describe 'The hubot create function', ->
     @loaderMock.verify()
 
   it 'create a standup at 10 (Europe/Paris) for user1, user2', ->
-    @loaderMock.expects('create').once().withArgs({at: '10', timezone: 'Europe/Paris', users: ['user1', 'user2'], user: 'roger'})
+    @loaderMock.expects('create').once().withArgs({at: '10', timezone: 'Europe/Paris', users: ['user1', 'user2'], room: 'dev'})
 
     response = createResponse('standup at 10 (Europe/Paris) for user1, user2', @regexp)
     scriptStandup.create(@loader)(response)

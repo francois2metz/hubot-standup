@@ -26,7 +26,7 @@ create = (loader) ->
     opts =
       at: msg.match[1]
       users: users
-      user: msg.message.user
+      room: msg.message.room
     opts.timezone = msg.match[2] if msg.match[2]
     loader.create(opts)
     msg.send "standup defined at #{opts.at} for #{joinUsers(opts.users)}"
@@ -63,7 +63,7 @@ createLoader = (robot) ->
     STANDUP.stop() if STANDUP
     robot.brain.data.standup = null
   sendMessage: (opts) ->
-    robot.send opts.user, "#{joinUsers(opts.users)} standup meeting!"
+    robot.send opts.room, "#{joinUsers(opts.users)} standup meeting!"
 
 exports = (robot) ->
   robot.brain.on 'loaded', =>
