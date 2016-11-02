@@ -14,9 +14,10 @@
   "author": "François de Metz",
   "license": "BSD",
   "devDependencies": {
-    "mocha": "~1.14.0",
     "coffee-script": "~1.6.3",
     "expect.js": "~0.2.0",
+    "hubot": "^2.19.0",
+    "mocha": "~1.14.0",
     "sinon": "~1.7.3"
   },
   "dependencies": {
