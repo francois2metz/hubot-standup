@@ -63,7 +63,7 @@ createLoader = (robot) ->
     STANDUP.stop() if STANDUP
     robot.brain.data.standup = null
   sendMessage: (opts) ->
-    robot.send opts.room, "#{joinUsers(opts.users)} standup meeting!"
+    robot.messageRoom opts.room, "#{joinUsers(opts.users)} standup meeting!"
 
 exports = (robot) ->
   robot.brain.on 'loaded', =>
